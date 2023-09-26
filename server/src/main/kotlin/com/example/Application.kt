@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.models.Game
 import com.example.plugins.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -12,8 +13,9 @@ fun main() {
 
 @Suppress("unused")
 fun Application.module() {
+    val game = Game()
     configureMonitoring()
     configureSerialization()
     configureSockets()
-    configureRouting()
+    configureRouting(game)
 }
