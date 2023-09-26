@@ -10,6 +10,7 @@ fun main() {
         .start(wait = true)
 }
 
+@Suppress("unused")
 fun Application.module() {
     configureMonitoring()
     configureSerialization()
