@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.tictactoeclient.ui.theme.TicTacToeClientTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,84 +38,79 @@ class MainActivity : ComponentActivity() {
                 val isConnecting by viewModel.isConnecting.collectAsState()
                 val showConnectionError by viewModel.showConnectionError.collectAsState()
 
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    if (showConnectionError) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "Couldn't connect to the server",
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                        return@Surface
-                    }
+                if (showConnectionError) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(top = 32.dp)
-                                .align(Alignment.TopCenter)
-                        ) {
-                            if (!state.connectedPlayers.contains('X')) {
-                                Text(
-                                    text = "Waiting for player X",
-                                    fontSize = 32.sp
-                                )
-                            }
-                            else if (!state.connectedPlayers.contains('O')) {
-                                Text(
-                                    text = "Waiting for player O",
-                                    fontSize = 32.sp
-                                )
-                            }
-                            if (state.connectedPlayers.size == 2
-                                && state.winningPlayer == null
-                                && !state.isBoardFull) {
-                                Text(
-                                    text = if (state.playerAtTurn == 'X') {
-                                        "X is next"
-                                    } else "O is next",
-                                    fontSize = 32.sp
-                                )
-                            }
-                            Field(
-                                state = state,
-                                onTapField = viewModel::finishTurn,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .aspectRatio(1f)
-                                    .padding(16.dp)
+                        Text(
+                            text = "Couldn't connect to the server",
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                    return@TicTacToeClientTheme
+                }
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(top = 32.dp)
+                            .align(Alignment.TopCenter)
+                    ) {
+                        if (!state.connectedPlayers.contains('X')) {
+                            Text(
+                                text = "Waiting for player X",
+                                fontSize = 32.sp
                             )
+                        }
+                        else if (!state.connectedPlayers.contains('O')) {
+                            Text(
+                                text = "Waiting for player O",
+                                fontSize = 32.sp
+                            )
+                        }
+                        if (state.connectedPlayers.size == 2
+                            && state.winningPlayer == null
+                            && !state.isBoardFull) {
+                            Text(
+                                text = if (state.playerAtTurn == 'X') {
+                                    "X is next"
+                                } else "O is next",
+                                fontSize = 32.sp
+                            )
+                        }
+                        Field(
+                            state = state,
+                            onTapField = if (state.connectedPlayers.size == 2) viewModel::finishTurn else {_, _->},
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
+                                .padding(16.dp)
+                        )
 
-                            if (state.isBoardFull || state.winningPlayer != null) {
-                                Text(
-                                    text = when(state.winningPlayer) {
-                                        'X' -> "Player X won!"
-                                        'O' -> "Player O won!"
-                                        else -> "Draw"
-                                    },
-                                    fontSize = 32.sp,
-                                    modifier = Modifier
-                                        .padding(bottom = 32.dp)
-                                )
-                            }
+                        if (state.isBoardFull || state.winningPlayer != null) {
+                            Text(
+                                text = when(state.winningPlayer) {
+                                    'X' -> "Player X won!"
+                                    'O' -> "Player O won!"
+                                    else -> "Draw"
+                                },
+                                fontSize = 32.sp,
+                                modifier = Modifier
+                                    .padding(bottom = 32.dp)
+                            )
+                        }
 
-                            if(isConnecting) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .background(Color.White),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    CircularProgressIndicator()
-                                }
+                        if(isConnecting) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(Color.White),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
                             }
                         }
                     }

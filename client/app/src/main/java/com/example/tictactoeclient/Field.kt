@@ -23,7 +23,7 @@ fun Field(
     modifier: Modifier = Modifier,
     playerXColor : Color = Color.Green,
     playerYColor : Color = Color.Red,
-    onTapField : (x : Int, y : Int) -> Unit
+    onTapField : (x : Int, y : Int) -> Unit = {_,_->}
 ) {
     Canvas(modifier = modifier.pointerInput(true){
         detectTapGestures {

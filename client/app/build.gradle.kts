@@ -1,9 +1,11 @@
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    kotlin("plugin.serialization") version "1.9.10"
     kotlin("kapt")
+    id("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -56,10 +58,10 @@ val ktor_version: String by project
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
-    kapt(libs.hilt.android.compiler)
 
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
