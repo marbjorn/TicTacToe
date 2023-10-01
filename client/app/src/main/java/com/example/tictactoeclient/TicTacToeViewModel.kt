@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TicTacToeViewModel @Inject constructor(
-    private val client : KtorMessaging
+    private val client : Messaging
 ) : ViewModel() {
 
     val state = client
