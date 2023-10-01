@@ -52,11 +52,17 @@ android {
     }
 }
 
+val ktor_version: String by project
+
 dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
